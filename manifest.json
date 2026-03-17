@@ -1,0 +1,22 @@
+{
+  "name": "CSS Academy — تعلّم CSS بشكل احترافي",
+  "short_name": "CSS Academy",
+  "description": "منصة تعليمية لتعلم CSS بشكل تفاعلي واحترافي بمفهوم الأكاديمية",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a2200",
+  "theme_color": "#468B8D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
