@@ -805,6 +805,63 @@
   .quiz-option.correct { background: rgba(70,139,141,0.2); border-color: var(--accent); color: var(--accent2); }
   .quiz-option.wrong { background: rgba(200,50,50,0.15); border-color: #c84040; color: #c84040; }
 
+  /* ── THEMES ── */
+  html[data-theme='light'] {
+    --bg: #f0f4f8; --bg2: #e1e8ed; --bg3: #ffffff;
+    --text: #2c3e50; --text-dim: #5a6c7d;
+    --c1: #1a252f; --card: rgba(255,255,255,0.9);
+    --card-border: rgba(70,139,141,0.3);
+    --code-bg: #fafbfc;
+  }
+  html[data-theme='black'] {
+    --bg: #000; --bg2: #050505; --bg3: #111;
+    --card: #0a0a0a; --card-border: #222;
+  }
+
+  /* ── TOP BAR & UTILITIES ── */
+  .top-bar {
+    position: fixed; top: 0; left: 0; right: 280px; height: 60px;
+    background: var(--bg3); border-bottom: 1px solid var(--card-border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; z-index: 90; transition: right 0.3s ease;
+  }
+  .top-search-wrap { display: flex; align-items: center; gap: 10px; }
+  .top-search {
+    background: var(--bg); border: 1px solid var(--card-border);
+    color: var(--text); padding: 8px 16px; border-radius: 20px;
+    outline: none; font-family: var(--font); width: 250px;
+    transition: width 0.3s;
+  }
+  .top-search:focus { width: 300px; border-color: var(--accent); }
+  
+  .top-actions { display: flex; gap: 12px; align-items: center; }
+  .icon-btn {
+    background: var(--bg); border: 1px solid var(--card-border);
+    color: var(--text); width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: 0.2s; font-size: 16px;
+  }
+  .icon-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  
+  .user-level {
+    display: flex; align-items: center; gap: 8px; background: rgba(70,139,141,0.1);
+    padding: 6px 16px; border-radius: 20px; border: 1px solid var(--card-border);
+    font-weight: 700; font-size: 14px;
+  }
+  .user-level span { color: var(--accent2); }
+
+  /* ── FOCUS MODE ── */
+  body.focus-mode .sidebar { transform: translateX(100%); }
+  body.focus-mode .top-bar { right: 0; }
+  body.focus-mode .main { margin-right: 0; }
+
+  /* ── FONT SIZE ── */
+  html.font-large {
+    font-size: 110%;
+  }
+
+  /* Confetti Canvas */
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
 </style>
 </head>
 <body>
@@ -819,14 +876,31 @@
   </div>
 
   <div class="nav-section">
+    <div class="nav-section-title">GAMIFICATION 🔥</div>
+    <div class="nav-item" onclick="showSection('daily-challenge')">
+      <span class="icon">📅</span> تحدي اليوم
+      <span class="badge" style="background:#f0b04a;color:#000;">جديد</span>
+    </div>
+    <div class="nav-item" onclick="showSection('leaderboard')">
+      <span class="icon">🏆</span> لوحة الصدارة
+    </div>
+    <div class="nav-item" onclick="showSection('bookmarks')">
+      <span class="icon">⭐</span> المفضلة <span class="badge" style="background:var(--card-border);color:var(--text)" id="bookmark-count">0</span>
+    </div>
+    <div class="nav-item" onclick="showSection('snippets')">
+      <span class="icon">💻</span> مكتبة القوالب
+    </div>
+  </div>
+
+  <div class="nav-section">
     <div class="nav-section-title">البداية</div>
-    <div class="nav-item active" onclick="showSection('intro')">
+    <div class="nav-item active" onclick="showSection('intro')" id="nav-intro">
       <span class="icon">🎯</span> مقدمة CSS
     </div>
-    <div class="nav-item" onclick="showSection('syntax')">
+    <div class="nav-item" onclick="showSection('syntax')" id="nav-syntax">
       <span class="icon">📝</span> Syntax والمحددات
     </div>
-    <div class="nav-item" onclick="showSection('colors')">
+    <div class="nav-item" onclick="showSection('colors')" id="nav-colors">
       <span class="icon">🎨</span> الألوان
     </div>
   </div>
@@ -892,7 +966,21 @@
 </nav>
 
 <!-- MAIN -->
-<main class="main">
+<main class="main" style="padding-top:60px;">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-search-wrap">
+      <input type="text" class="top-search" placeholder="ابحث عن خاصية (مثال: Grid)..." id="global-search" onkeyup="handleSearch(event)">
+      <div class="user-level">المستوى: <span id="user-lvl-nr">1</span> 🌟 <span id="user-xp" style="margin-right:8px;font-size:12px;color:var(--text-dim)">0 XP</span></div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="toggleTheme()" title="تغيير الثيم">🌓</button>
+      <button class="icon-btn" onclick="toggleFontSize()" title="تكبير الخط">Aa</button>
+      <button class="icon-btn" onclick="toggleFocusMode()" title="وضع التركيز">🎯</button>
+      <button class="icon-btn" onclick="alert('تغيير اللغة سيكون متاحاً في التحديث القادم!')" title="تغيير اللغة">🌐</button>
+    </div>
+  </div>
 
   <!-- HERO -->
   <div class="hero" id="hero-section">
@@ -907,6 +995,68 @@
       <div><div style="font-size:28px;font-weight:900;color:var(--c1);">15+</div><div style="font-size:13px;color:var(--text-dim);">موضوع</div></div>
       <div><div style="font-size:28px;font-weight:900;color:var(--c1);">50+</div><div style="font-size:13px;color:var(--text-dim);">مثال تفاعلي</div></div>
       <div><div style="font-size:28px;font-weight:900;color:var(--c1);">100%</div><div style="font-size:13px;color:var(--text-dim);">مجاني</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ GAMIFICATION & EXTRAS ═══ -->
+  
+  <div id="daily-challenge" class="content">
+    <div class="section-title">📅 تحدي اليوم</div>
+    <div class="section-subtitle">حل التحدي واحصل على 50 XP</div>
+    <div class="lesson-card" style="border-color:#f0b04a;">
+      <h3 style="color:#f0b04a;">تحدي الأسبوع: التوسيط السحري</h3>
+      <p>استخدم Flexbox لتوسيط المحتوى تماماً. (تخيل الكود)</p>
+      <div class="code-block" contenteditable="true" style="border: 1px dashed #f0b04a; padding:10px; background:rgba(0,0,0,0.5); min-height:80px;">
+.container {
+  display: flex;
+  /* اكتب الكود هنا... */
+}
+      </div>
+      <button onclick="alert('أحسنت! إجابة صحيحة وتمت إضافة 50 XP'); addXP(50); showSection('intro');" style="background:#f0b04a;color:#000;border:none;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:16px;">تحقق من الإجابة</button>
+    </div>
+  </div>
+
+  <div id="leaderboard" class="content">
+    <div class="section-title">🏆 لوحة الصدارة</div>
+    <div class="section-subtitle">أكثر المتعلمين تفاعلاً</div>
+    <div class="lesson-card">
+      <table class="prop-table" style="direction:rtl; text-align:right;">
+        <tr style="background:rgba(255,215,0,0.2);"><th>المركز</th><th>الاسم</th><th>XP</th><th>المستوى</th></tr>
+        <tr><td>🥇 1</td><td>أحمد محمد</td><td>1250 XP</td><td>12</td></tr>
+        <tr><td>🥈 2</td><td>سارة علي</td><td>980 XP</td><td>10</td></tr>
+        <tr style="background:rgba(70,139,141,0.1);"><td>⭐</td><td>أنت (You)</td><td><span id="lb-user-xp">0</span> XP</td><td><span id="lb-user-lvl">1</span></td></tr>
+        <tr><td>4</td><td>عمر م.</td><td>450 XP</td><td>5</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="bookmarks" class="content">
+    <div class="section-title">⭐ المفضلة</div>
+    <div class="section-subtitle">العناصر المحفوظة</div>
+    <div class="lesson-card">
+      <p style="text-align:center; padding: 40px; color:var(--text-dim);">لم تقم بحفظ أي دروس بعد. اضغط على النجمة ⭐ بجوار أي قسم.</p>
+    </div>
+  </div>
+
+  <div id="snippets" class="content">
+    <div class="section-title">💻 مكتبة القوالب</div>
+    <div class="section-subtitle">أكواد جاهزة للنسخ والاستخدام السريع</div>
+    <div class="lessons-grid">
+      <div class="mini-card" onclick="copyCodeFromText('box-shadow: 0 0 15px var(--accent); transition: 0.3s;')">
+        <div class="icon">✨</div>
+        <h4>Glow Button</h4>
+        <p>زر يضيء عند المرور عليه. اضغط للنسخ.</p>
+      </div>
+      <div class="mini-card" onclick="copyCodeFromText('background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);')">
+        <div class="icon">🔍</div>
+        <h4>Glassmorphism</h4>
+        <p>تأثير الزجاج الشفاف. اضغط للنسخ.</p>
+      </div>
+      <div class="mini-card" onclick="copyCodeFromText('display: flex; justify-content: center; align-items: center;')">
+        <div class="icon">🎯</div>
+        <h4>Center Everything</h4>
+        <p>أسرع طريقة لتوسيط أي عنصر. اضغط للنسخ.</p>
+      </div>
     </div>
   </div>
 
@@ -2245,11 +2395,114 @@ function answerQuiz(idx) {
 // Init
 showSection('intro');
 </script>
+
+<!-- CONFETTI LIBRARY FOR MICRO-INTERACTIONS -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+  // --- GAMIFICATION & PROGRESS ---
+  let userXP = parseInt(localStorage.getItem('css_xp')) || 0;
+  let userLevel = Math.floor(userXP / 100) + 1;
+  document.getElementById('user-xp').innerText = `${userXP} XP`;
+  document.getElementById('user-lvl-nr').innerText = userLevel;
+
+  function addXP(points) {
+    userXP += points;
+    localStorage.setItem('css_xp', userXP);
+    userLevel = Math.floor(userXP / 100) + 1;
+    document.getElementById('user-xp').innerText = `${userXP} XP`;
+    document.getElementById('user-lvl-nr').innerText = userLevel;
+  }
+
+  // Override showSection to track progress
+  const originalShowSection = showSection;
+  showSection = function(id) {
+    originalShowSection(id);
+    localStorage.setItem('css_last_section', id);
+    if(id !== 'intro' && id !== 'quiz') addXP(5); // Reward exploration
+  };
+
+  // Auto-resume progress
+  window.addEventListener('DOMContentLoaded', () => {
+    const lastSec = localStorage.getItem('css_last_section');
+    if(lastSec && document.getElementById(lastSec)) {
+      showSection(lastSec);
+    }
+  });
+
+  // --- UI TOGGLES (Themes, Focus, Font) ---
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'black' : current === 'black' ? '' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('css_theme', next);
+  }
+  // Load saved theme
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('css_theme') || '');
+
+  function toggleFocusMode() {
+    document.body.classList.toggle('focus-mode');
+  }
+
+  function toggleFontSize() {
+    document.documentElement.classList.toggle('font-large');
+  }
+
+  function handleSearch(e) {
+    if(e.key === 'Enter') {
+      const v = e.target.value.toLowerCase();
+      if(v.includes('flex')) showSection('flexbox');
+      else if(v.includes('grid')) showSection('grid');
+      else if(v.includes('color')) showSection('colors');
+      else if(v.includes('pos')) showSection('position');
+      else alert('لم يتم العثور على نتائج، جرب Flex أو Grid');
+    }
+  }
+
+  function copyCodeFromText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('تم نسخ الكود بنجاح!');
+    });
+  }
+
+  // Update Leaderboard dynamically whenever XP changes
+  function updateLeaderboard() {
+    document.getElementById('lb-user-xp').innerText = userXP;
+    document.getElementById('lb-user-lvl').innerText = Math.floor(userXP / 100) + 1;
+  }
+  // Call it on load
+  updateLeaderboard();
+
+  // Override addXP to also update leaderboard
+  const originalAddXP = addXP;
+  addXP = function(points) {
+    originalAddXP(points);
+    updateLeaderboard();
+  };
+
+  // Confetti on Quiz completion
+  const originalRenderQuestion = renderQuestion;
+  renderQuestion = function() {
+    originalRenderQuestion();
+    if (currentQ >= questions.length && score >= 5) {
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      addXP(score * 20); // Big reward!
+    }
+  };
+
+</script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Service Worker Registered'))
+        .then(reg => {
+          console.log('Service Worker Registered');
+          // Add basic Push Notification Placeholder
+          if(Notification.permission !== "granted") {
+            Notification.requestPermission();
+          }
+        })
         .catch(err => console.log('Service Worker Registration Failed', err));
     });
   }
