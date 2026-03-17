@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Academy — تعلّم CSS بشكل احترافي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #EEEEEE;
+    --c2: #D5E1EF;
+    --c3: #468B8D;
+    --c4: #253900;
+    --bg: #1a2200;
+    --bg2: #213000;
+    --bg3: #0d1500;
+    --text: #EEEEEE;
+    --text-dim: #a0b080;
+    --accent: #468B8D;
+    --accent2: #5fb3b5;
+    --card: rgba(37,57,0,0.6);
+    --card-border: rgba(70,139,141,0.25);
+    --code-bg: #0a1000;
+    --radius: 16px;
+    --font: 'Cairo', sans-serif;
+    --mono: 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--bg3);
+    border-left: 1px solid var(--card-border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 16px;
+  }
+
+  .logo h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--c1);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span {
+    display: block;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  .nav-section {
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 8px 4px;
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dim);
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: rgba(70,139,141,0.1);
+    color: var(--c1);
+    border-color: var(--card-border);
+  }
+
+  .nav-item.active {
+    background: rgba(70,139,141,0.18);
+    color: var(--accent2);
+    border-color: rgba(70,139,141,0.4);
+    font-weight: 600;
+  }
+
+  .nav-item .icon { font-size: 16px; flex-shrink: 0; }
+
+  .badge {
+    margin-right: auto;
+    background: var(--accent);
+    color: var(--bg3);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-right: 280px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 60px 60px;
+    background: linear-gradient(135deg, rgba(70,139,141,0.08) 0%, transparent 60%);
+    border-bottom: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'CSS';
+    position: absolute;
+    left: -20px;
+    top: -20px;
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(70,139,141,0.04);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(70,139,141,0.15);
+    border: 1px solid rgba(70,139,141,0.3);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--accent2);
+    margin-bottom: 24px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h2 {
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--c1);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero h2 em {
+    font-style: normal;
+    color: var(--accent2);
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    padding: 40px 60px;
+    display: none;
+  }
+
+  .content.active { display: block; }
+
+  /* ── LESSON CARD ── */
+  .lesson-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+    animation: slideIn 0.4s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .lesson-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--c1);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lesson-card h3 .num {
+    background: var(--accent);
+    color: var(--bg3);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .lesson-card p {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid rgba(70,139,141,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    font-family: var(--mono);
+    direction: ltr;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(70,139,141,0.08);
+    border-bottom: 1px solid rgba(70,139,141,0.15);
+  }
+
+  .code-header span {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid rgba(70,139,141,0.3);
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { background: rgba(70,139,141,0.2); color: var(--c1); }
+
+  .code-content {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+    color: #c8d5b0;
+  }
+
+  .code-content .prop { color: #5fb3b5; }
+  .code-content .val { color: #f0b04a; }
+  .code-content .sel { color: #a78bfa; }
+  .code-content .comment { color: #556640; font-style: italic; }
+
+  /* ── INTERACTIVE PLAYGROUND ── */
+  .playground {
+    background: var(--code-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .playground-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(70,139,141,0.1);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .playground-header h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .playground-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .playground-controls {
+    padding: 24px;
+    border-left: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .playground-preview {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: #fff;
+    position: relative;
+  }
+
+  .preview-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    color: #999;
+    background: rgba(0,0,0,0.05);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    direction: ltr;
+  }
+
+  /* ── CONTROL ROW ── */
+  .control-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .control-row label {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .control-row label code {
+    font-family: var(--mono);
+    background: rgba(70,139,141,0.15);
+    color: var(--accent2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .opt-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-dim);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: var(--mono);
+    transition: all 0.2s;
+    direction: ltr;
+  }
+
+  .opt-btn:hover { border-color: var(--accent); color: var(--c1); }
+  .opt-btn.selected {
+    background: rgba(70,139,141,0.2);
+    border-color: var(--accent);
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .opt-btn.color-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .color-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .range-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .range-control input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: rgba(70,139,141,0.2);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  .range-control input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .range-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent2);
+    min-width: 45px;
+    text-align: center;
+    direction: ltr;
+  }
+
+  /* ── CSS OUTPUT DISPLAY ── */
+  .css-output {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #a0c060;
+    direction: ltr;
+    margin-top: 8px;
+    min-height: 40px;
+    transition: all 0.3s;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--c1);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--card-border));
+  }
+
+  .section-subtitle {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  /* ── GRID LESSONS ── */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .mini-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mini-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(70,139,141,0.15) 0%, transparent 70%);
+    border-radius: 0 var(--radius) 0 60px;
+  }
+
+  .mini-card:hover {
+    border-color: rgba(70,139,141,0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .mini-card .icon { font-size: 28px; margin-bottom: 12px; }
+
+  .mini-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c1);
+    margin-bottom: 6px;
+  }
+
+  .mini-card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── TABLE ── */
+  .prop-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 16px 0;
+    direction: rtl;
+  }
+
+  .prop-table th {
+    background: rgba(70,139,141,0.15);
+    color: var(--accent2);
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .prop-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(70,139,141,0.1);
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .prop-table tr:hover td { background: rgba(70,139,141,0.05); }
+
+  .prop-table td:first-child {
+    font-family: var(--mono);
+    color: var(--accent2);
+    font-size: 13px;
+    direction: ltr;
+    text-align: left;
+  }
+
+  /* ── FLEXBOX DEMO ── */
+  .flex-demo-container {
+    background: rgba(0,0,0,0.3);
+    border: 2px dashed rgba(70,139,141,0.3);
+    border-radius: 10px;
+    padding: 12px;
+    min-height: 120px;
+    transition: all 0.4s ease;
+    direction: ltr;
+  }
+
+  .flex-demo-item {
+    background: linear-gradient(135deg, var(--c3), var(--c4));
+    color: var(--c1);
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: var(--mono);
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+  }
+
+  /* ── GRID DEMO ── */
+  .grid-demo-container {
+    background: rgba(0,0,0,0.3);
+    border: 2px dashed rgba(70,139,141,0.3);
+    border-radius: 10px;
+    padding: 12px;
+    display: grid;
+    min-height: 200px;
+    gap: 8px;
+    direction: ltr;
+    transition: all 0.4s ease;
+  }
+
+  .grid-demo-item {
+    background: linear-gradient(135deg, #2a5f61, var(--c4));
+    color: var(--c1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: var(--mono);
+    min-height: 50px;
+    font-size: 14px;
+    transition: all 0.4s ease;
+  }
+
+  /* ── ANIMATION DEMO ── */
+  .anim-box {
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    border-radius: 12px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  /* ── TRANSFORM DEMO ── */
+  .transform-box {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--c3), var(--c4));
+    border-radius: 12px;
+    margin: 0 auto;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  /* ── MOBILE TOGGLE ── */
+  .menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 200;
+    background: var(--accent);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-right: 0; }
+    .menu-toggle { display: flex; }
+    .hero { padding: 60px 24px 40px; }
+    .hero h2 { font-size: 36px; }
+    .content { padding: 24px; }
+    .playground-body { grid-template-columns: 1fr; }
+    .playground-preview { min-height: 160px; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg3); }
+  ::-webkit-scrollbar-thumb { background: rgba(70,139,141,0.4); border-radius: 3px; }
+
+  /* ── HIGHLIGHT ── */
+  .highlight {
+    display: inline-block;
+    background: rgba(70,139,141,0.15);
+    border: 1px solid rgba(70,139,141,0.25);
+    color: var(--accent2);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 1px 8px;
+    border-radius: 5px;
+  }
+
+  /* ── TIP BOX ── */
+  .tip {
+    background: rgba(70,139,141,0.08);
+    border-right: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .tip strong { color: var(--accent2); }
+
+  /* ── PROGRESS ── */
+  .progress-bar-outer {
+    width: 100%;
+    height: 6px;
+    background: rgba(70,139,141,0.1);
+    border-radius: 3px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c4) 0%, var(--c3) 100%);
+    border-radius: 3px;
+    transition: width 0.8s ease;
+  }
+
+  /* QUIZ */
+  .quiz-option {
+    padding: 12px 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    font-family: var(--mono);
+    direction: ltr;
+  }
+  .quiz-option:hover { border-color: var(--accent); color: var(--c1); }
+  .quiz-option.correct { background: rgba(70,139,141,0.2); border-color: var(--accent); color: var(--accent2); }
+  .quiz-option.wrong { background: rgba(200,50,50,0.15); border-color: #c84040; color: #c84040; }
+
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h1>CSS Academy</h1>
+    <span>من الصفر للاحتراف</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">البداية</div>
+    <div class="nav-item active" onclick="showSection('intro')">
+      <span class="icon">🎯</span> مقدمة CSS
+    </div>
+    <div class="nav-item" onclick="showSection('syntax')">
+      <span class="icon">📝</span> Syntax والمحددات
+    </div>
+    <div class="nav-item" onclick="showSection('colors')">
+      <span class="icon">🎨</span> الألوان
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">التنسيق الأساسي</div>
+    <div class="nav-item" onclick="showSection('backgrounds')">
+      <span class="icon">🖼️</span> الخلفيات
+    </div>
+    <div class="nav-item" onclick="showSection('text')">
+      <span class="icon">✍️</span> النصوص
+    </div>
+    <div class="nav-item" onclick="showSection('fonts')">
+      <span class="icon">🔤</span> الخطوط
+    </div>
+    <div class="nav-item" onclick="showSection('borders')">
+      <span class="icon">⬜</span> الإطارات
+    </div>
+    <div class="nav-item" onclick="showSection('boxmodel')">
+      <span class="icon">📦</span> Box Model
+    </div>
+    <div class="nav-item" onclick="showSection('position')">
+      <span class="icon">📍</span> Position
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">تخطيط الصفحة</div>
+    <div class="nav-item" onclick="showSection('flexbox')">
+      <span class="icon">↔️</span> Flexbox
+      <span class="badge">مهم</span>
+    </div>
+    <div class="nav-item" onclick="showSection('grid')">
+      <span class="icon">🔲</span> CSS Grid
+      <span class="badge">مهم</span>
+    </div>
+    <div class="nav-item" onclick="showSection('responsive')">
+      <span class="icon">📱</span> Responsive Design
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">متقدم 🔥</div>
+    <div class="nav-item" onclick="showSection('transforms')">
+      <span class="icon">🔄</span> Transforms
+    </div>
+    <div class="nav-item" onclick="showSection('animations')">
+      <span class="icon">✨</span> Animations
+    </div>
+    <div class="nav-item" onclick="showSection('variables')">
+      <span class="icon">💾</span> CSS Variables
+    </div>
+    <div class="nav-item" onclick="showSection('pseudo')">
+      <span class="icon">🎭</span> Pseudo-classes
+    </div>
+    <div class="nav-item" onclick="showSection('advanced')">
+      <span class="icon">⚡</span> خصائص متقدمة
+    </div>
+    <div class="nav-item" onclick="showSection('quiz')">
+      <span class="icon">🧠</span> اختبر نفسك
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="hero-section">
+    <div class="hero-tag">دورة تفاعلية</div>
+    <h2>تعلّم CSS<br>بشكل <em>احترافي</em></h2>
+    <p>من الأساسيات لخصائص المتقدمة — مع تجربة مباشرة لكل خاصية وشوف النتيجة أمامك فوراً.</p>
+    <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;">
+      <button onclick="showSection('intro')" style="background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;">ابدأ الآن ←</button>
+      <button onclick="showSection('flexbox')" style="background:transparent;color:var(--accent2);border:1px solid var(--card-border);padding:12px 28px;border-radius:10px;font-family:var(--font);font-size:15px;cursor:pointer;">Flexbox مباشرة</button>
+    </div>
+    <div style="margin-top:40px; display:flex; gap:32px;">
+      <div><div style="font-size:28px;font-weight:900;color:var(--c1);">15+</div><div style="font-size:13px;color:var(--text-dim);">موضوع</div></div>
+      <div><div style="font-size:28px;font-weight:900;color:var(--c1);">50+</div><div style="font-size:13px;color:var(--text-dim);">مثال تفاعلي</div></div>
+      <div><div style="font-size:28px;font-weight:900;color:var(--c1);">100%</div><div style="font-size:13px;color:var(--text-dim);">مجاني</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ INTRO ═══ -->
+  <div id="intro" class="content">
+    <div class="section-title">🎯 مقدمة في CSS</div>
+    <div class="section-subtitle">اعرف إيه هو CSS وليه بتستخدمه</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> CSS إيه هو؟</h3>
+      <p>CSS اختصار من <strong style="color:var(--accent2)">Cascading Style Sheets</strong> — هي اللغة اللي بتتحكم في <em>شكل</em> صفحات HTML. من غير CSS الصفحة بتبقى نص عادي بدون أي تنسيق.</p>
+      <div class="tip"><strong>فكرة بسيطة:</strong> HTML = هيكل المبنى، CSS = الديكور والتصميم.</div>
+
+      <p>في CSS في جزئين أساسيين:</p>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="prop">color</span>: <span class="val">red</span>;
+<span class="comment">/* الخاصية (Property): color */</span>
+<span class="comment">/* القيمة (Value): red    */</span></div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> طرق كتابة CSS</h3>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom:20px;">
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">📄</div>
+          <div style="font-weight:700;color:var(--c1);margin-bottom:6px;">External</div>
+          <div style="font-size:12px;color:var(--text-dim);">ملف .css منفصل — الأفضل للمشاريع</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">📋</div>
+          <div style="font-weight:700;color:var(--c1);margin-bottom:6px;">Internal</div>
+          <div style="font-size:12px;color:var(--text-dim);">داخل &lt;style&gt; في &lt;head&gt;</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">✏️</div>
+          <div style="font-weight:700;color:var(--c1);margin-bottom:6px;">Inline</div>
+          <div style="font-size:12px;color:var(--text-dim);">داخل العنصر مباشرة — تجنبه</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span>External — HTML</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="comment">&lt;!-- في ملف HTML --&gt;</span>
+&lt;<span class="sel">link</span> rel="stylesheet" href="<span class="val">style.css</span>"&gt;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SYNTAX / SELECTORS ═══ -->
+  <div id="syntax" class="content">
+    <div class="section-title">📝 Syntax والمحددات</div>
+    <div class="section-subtitle">Selectors — إزاي تختار العنصر اللي عايز تنسّقه</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> أنواع الـ Selectors</h3>
+      <table class="prop-table">
+        <tr><th>النوع</th><th>مثال</th><th>الوظيفة</th></tr>
+        <tr><td>*</td><td>Universal</td><td>يختار كل العناصر</td></tr>
+        <tr><td>h1, p, div</td><td>Element</td><td>يختار عناصر معينة</td></tr>
+        <tr><td>.my-class</td><td>Class</td><td>يختار عناصر بـ class محدد</td></tr>
+        <tr><td>#my-id</td><td>ID</td><td>يختار عنصر واحد فقط</td></tr>
+        <tr><td>h1, h2, p</td><td>Grouping</td><td>يختار مجموعة بنفس التنسيق</td></tr>
+        <tr><td>div p</td><td>Descendant</td><td>p داخل div</td></tr>
+        <tr><td>div > p</td><td>Child</td><td>p ابن مباشر لـ div</td></tr>
+        <tr><td>h1 + p</td><td>Adjacent</td><td>p بعد h1 مباشرة</td></tr>
+        <tr><td>[type="text"]</td><td>Attribute</td><td>عناصر بـ attribute معين</td></tr>
+      </table>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Specificity — الأولوية</h3>
+      <p>لو في تعارض بين rules، CSS بيطبق حسب الأولوية:</p>
+      <div style="display:flex; gap:8px; align-items:center; margin:16px 0; direction:ltr; flex-wrap:wrap;">
+        <div style="background:#c84040;color:#fff;padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;">!important</div>
+        <div style="color:var(--text-dim)">></div>
+        <div style="background:var(--c4);border:1px solid var(--c3);color:var(--c1);padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;">inline style</div>
+        <div style="color:var(--text-dim)">></div>
+        <div style="background:rgba(70,139,141,0.2);border:1px solid var(--c3);color:var(--c1);padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;">#id</div>
+        <div style="color:var(--text-dim)">></div>
+        <div style="background:rgba(70,139,141,0.1);border:1px solid var(--card-border);color:var(--c1);padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;">.class</div>
+        <div style="color:var(--text-dim)">></div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid var(--card-border);color:var(--text-dim);padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;">element</div>
+      </div>
+      <div class="tip"><strong>قاعدة:</strong> استخدم <span class="highlight">!important</span> بحذر — غالباً معناه في مشكلة في التصميم.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ COLORS ═══ -->
+  <div id="colors" class="content">
+    <div class="section-title">🎨 الألوان في CSS</div>
+    <div class="section-subtitle">كل طرق كتابة الألوان مع playground تجريبي</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> طرق كتابة الألوان</h3>
+      <table class="prop-table">
+        <tr><th>الطريقة</th><th>مثال</th><th>ملاحظة</th></tr>
+        <tr><td>Named</td><td>red, blue, teal</td><td>150+ اسم جاهز</td></tr>
+        <tr><td>HEX</td><td>#468B8D</td><td>الأشهر في التصميم</td></tr>
+        <tr><td>RGB</td><td>rgb(70, 139, 141)</td><td>أرقام من 0-255</td></tr>
+        <tr><td>RGBA</td><td>rgba(70,139,141,0.5)</td><td>مع Transparency</td></tr>
+        <tr><td>HSL</td><td>hsl(182, 34%, 41%)</td><td>Hue, Saturation, Lightness</td></tr>
+        <tr><td>HSLA</td><td>hsla(182,34%,41%,0.8)</td><td>مع Transparency</td></tr>
+      </table>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Color Playground</h3>
+      <div class="playground">
+        <div class="playground-header">
+          <h4>⚡ جرّب الألوان</h4>
+        </div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>color</code> — لون النص</label>
+              <div class="options-row">
+                <button class="opt-btn color-opt selected" onclick="setColorProp('textColor','#EEEEEE',this)"><span class="color-swatch" style="background:#EEEEEE"></span>#EEEEEE</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('textColor','#D5E1EF',this)"><span class="color-swatch" style="background:#D5E1EF"></span>#D5E1EF</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('textColor','#253900',this)"><span class="color-swatch" style="background:#253900"></span>#253900</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('textColor','#468B8D',this)"><span class="color-swatch" style="background:#468B8D"></span>#468B8D</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>background-color</code> — لون الخلفية</label>
+              <div class="options-row">
+                <button class="opt-btn color-opt selected" onclick="setColorProp('bgColor','#253900',this)"><span class="color-swatch" style="background:#253900"></span>#253900</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('bgColor','#468B8D',this)"><span class="color-swatch" style="background:#468B8D"></span>#468B8D</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('bgColor','#D5E1EF',this)"><span class="color-swatch" style="background:#D5E1EF"></span>#D5E1EF</button>
+                <button class="opt-btn color-opt" onclick="setColorProp('bgColor','#EEEEEE',this)"><span class="color-swatch" style="background:#EEEEEE"></span>#EEEEEE</button>
+              </div>
+            </div>
+            <div class="css-output" id="color-output">color: #EEEEEE;<br>background-color: #253900;</div>
+          </div>
+          <div class="playground-preview" id="color-preview" style="background:#253900;">
+            <div class="preview-label">Preview</div>
+            <p id="color-text" style="color:#EEEEEE;font-family:Cairo,sans-serif;font-size:20px;font-weight:700;">نص تجريبي — CSS مميز</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ BACKGROUNDS ═══ -->
+  <div id="backgrounds" class="content">
+    <div class="section-title">🖼️ الخلفيات</div>
+    <div class="section-subtitle">كل خصائص background مع تجربة مباشرة</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> خصائص الخلفية</h3>
+      <table class="prop-table">
+        <tr><th>الخاصية</th><th>الوظيفة</th><th>مثال</th></tr>
+        <tr><td>background-color</td><td>لون الخلفية</td><td>background-color: #253900</td></tr>
+        <tr><td>background-image</td><td>صورة خلفية</td><td>background-image: url('img.jpg')</td></tr>
+        <tr><td>background-repeat</td><td>تكرار الصورة</td><td>no-repeat / repeat-x / repeat-y</td></tr>
+        <tr><td>background-position</td><td>موقع الصورة</td><td>center / top right / 50% 50%</td></tr>
+        <tr><td>background-size</td><td>حجم الصورة</td><td>cover / contain / 100px</td></tr>
+        <tr><td>background-attachment</td><td>ثابت أو يتحرك</td><td>fixed / scroll / local</td></tr>
+        <tr><td>background</td><td>اختصار الكل</td><td>background: #fff url() no-repeat center</td></tr>
+      </table>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Background Playground</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ جرّب الخلفيات</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>background</code> — نوع الخلفية</label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setBg('solid',this)">Solid</button>
+                <button class="opt-btn" onclick="setBg('linear',this)">Linear Gradient</button>
+                <button class="opt-btn" onclick="setBg('radial',this)">Radial Gradient</button>
+                <button class="opt-btn" onclick="setBg('pattern',this)">Pattern</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>background-size</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setBgSize('auto',this)">auto</button>
+                <button class="opt-btn" onclick="setBgSize('cover',this)">cover</button>
+                <button class="opt-btn" onclick="setBgSize('contain',this)">contain</button>
+              </div>
+            </div>
+            <div class="css-output" id="bg-output">background: #253900;</div>
+          </div>
+          <div class="playground-preview" style="padding:0;">
+            <div id="bg-preview" style="width:100%;height:200px;background:#253900;transition:all 0.4s;display:flex;align-items:center;justify-content:center;">
+              <div class="preview-label">Preview</div>
+              <span style="color:white;font-weight:700;font-size:16px;text-shadow:0 2px 8px rgba(0,0,0,0.5);">الخلفية</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TEXT ═══ -->
+  <div id="text" class="content">
+    <div class="section-title">✍️ تنسيق النصوص</div>
+    <div class="section-subtitle">خصائص النصوص بالكامل مع playground</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> خصائص النصوص</h3>
+      <table class="prop-table">
+        <tr><th>الخاصية</th><th>الوظيفة</th></tr>
+        <tr><td>color</td><td>لون النص</td></tr>
+        <tr><td>text-align</td><td>المحاذاة: left / right / center / justify</td></tr>
+        <tr><td>text-decoration</td><td>underline / overline / line-through / none</td></tr>
+        <tr><td>text-transform</td><td>uppercase / lowercase / capitalize</td></tr>
+        <tr><td>text-shadow</td><td>ظل النص: x y blur color</td></tr>
+        <tr><td>letter-spacing</td><td>المسافة بين الحروف</td></tr>
+        <tr><td>word-spacing</td><td>المسافة بين الكلمات</td></tr>
+        <tr><td>line-height</td><td>ارتفاع السطر</td></tr>
+        <tr><td>text-indent</td><td>مسافة بداية السطر الأول</td></tr>
+        <tr><td>white-space</td><td>التحكم في المسافات البيضاء</td></tr>
+        <tr><td>text-overflow</td><td>ellipsis لما النص يطول</td></tr>
+        <tr><td>direction</td><td>rtl / ltr</td></tr>
+      </table>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Text Playground</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ نسّق النص</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>text-align</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setTextProp('text-align','right',this)">right</button>
+                <button class="opt-btn" onclick="setTextProp('text-align','center',this)">center</button>
+                <button class="opt-btn" onclick="setTextProp('text-align','left',this)">left</button>
+                <button class="opt-btn" onclick="setTextProp('text-align','justify',this)">justify</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>text-decoration</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setTextProp('text-decoration','none',this)">none</button>
+                <button class="opt-btn" onclick="setTextProp('text-decoration','underline',this)">underline</button>
+                <button class="opt-btn" onclick="setTextProp('text-decoration','line-through',this)">line-through</button>
+                <button class="opt-btn" onclick="setTextProp('text-decoration','overline',this)">overline</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>text-transform</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setTextProp('text-transform','none',this)">none</button>
+                <button class="opt-btn" onclick="setTextProp('text-transform','uppercase',this)">UPPERCASE</button>
+                <button class="opt-btn" onclick="setTextProp('text-transform','capitalize',this)">Capitalize</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>letter-spacing</code></label>
+              <div class="range-control">
+                <input type="range" min="-3" max="10" value="0" oninput="setTextRange('letter-spacing',this.value+'px',this)">
+                <span class="range-value" id="ls-val">0px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>line-height</code></label>
+              <div class="range-control">
+                <input type="range" min="1" max="3" step="0.1" value="1.5" oninput="setTextRange('line-height',this.value,this)">
+                <span class="range-value" id="lh-val">1.5</span>
+              </div>
+            </div>
+            <div class="css-output" id="text-output">text-align: right;</div>
+          </div>
+          <div class="playground-preview">
+            <div class="preview-label">Preview</div>
+            <p id="text-preview" style="max-width:200px;text-align:right;color:#333;font-family:Cairo,sans-serif;font-size:15px;line-height:1.5;">تعلّم CSS هيفتحلك أبواب كتير في تصميم الويب. جرب تغيير الخصائص وشوف التأثير فوراً.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ FONTS ═══ -->
+  <div id="fonts" class="content">
+    <div class="section-title">🔤 الخطوط</div>
+    <div class="section-subtitle">font properties مع مقارنة مباشرة</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> خصائص الخطوط</h3>
+      <table class="prop-table">
+        <tr><th>الخاصية</th><th>الوظيفة</th><th>مثال</th></tr>
+        <tr><td>font-family</td><td>نوع الخط</td><td>Arial, 'Times New Roman', sans-serif</td></tr>
+        <tr><td>font-size</td><td>حجم الخط</td><td>16px / 1rem / 1.2em</td></tr>
+        <tr><td>font-weight</td><td>سُمك الخط</td><td>normal / bold / 100-900</td></tr>
+        <tr><td>font-style</td><td>شكل الخط</td><td>normal / italic / oblique</td></tr>
+        <tr><td>font-variant</td><td>Small caps</td><td>normal / small-caps</td></tr>
+        <tr><td>font</td><td>اختصار كل الخصائص</td><td>italic bold 16px/1.5 Arial</td></tr>
+      </table>
+      <div class="tip"><strong>وحدات الحجم:</strong> px (ثابت) / rem (نسبي للجذر) / em (نسبي للأب) / vw (نسبة من الشاشة)</div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Font Playground</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ جرّب الخطوط</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>font-family</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFont('Cairo, sans-serif',this)">Cairo</button>
+                <button class="opt-btn" onclick="setFont('serif',this)">Serif</button>
+                <button class="opt-btn" onclick="setFont('monospace',this)">Mono</button>
+                <button class="opt-btn" onclick="setFont('cursive',this)">Cursive</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>font-size</code></label>
+              <div class="range-control">
+                <input type="range" min="10" max="48" value="20" oninput="setFontSize(this.value,this)">
+                <span class="range-value" id="fs-val">20px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>font-weight</code></label>
+              <div class="options-row">
+                <button class="opt-btn" onclick="setFontWeight('300',this)">300</button>
+                <button class="opt-btn selected" onclick="setFontWeight('400',this)">400</button>
+                <button class="opt-btn" onclick="setFontWeight('700',this)">700</button>
+                <button class="opt-btn" onclick="setFontWeight('900',this)">900</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>font-style</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFontStyle('normal',this)">normal</button>
+                <button class="opt-btn" onclick="setFontStyle('italic',this)">italic</button>
+              </div>
+            </div>
+            <div class="css-output" id="font-output">font-family: Cairo, sans-serif;<br>font-size: 20px;</div>
+          </div>
+          <div class="playground-preview">
+            <div class="preview-label">Preview</div>
+            <p id="font-preview" style="font-family:Cairo,sans-serif;font-size:20px;color:#333;text-align:center;max-width:200px;">CSS Academy<br>تعلّم CSS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ BORDERS ═══ -->
+  <div id="borders" class="content">
+    <div class="section-title">⬜ الإطارات</div>
+    <div class="section-subtitle">border properties كاملة</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> خصائص الإطار</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ Border Playground</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>border-style</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setBorder('style','solid',this)">solid</button>
+                <button class="opt-btn" onclick="setBorder('style','dashed',this)">dashed</button>
+                <button class="opt-btn" onclick="setBorder('style','dotted',this)">dotted</button>
+                <button class="opt-btn" onclick="setBorder('style','double',this)">double</button>
+                <button class="opt-btn" onclick="setBorder('style','groove',this)">groove</button>
+                <button class="opt-btn" onclick="setBorder('style','ridge',this)">ridge</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>border-width</code></label>
+              <div class="range-control">
+                <input type="range" min="1" max="16" value="2" oninput="setBorderWidth(this.value,this)">
+                <span class="range-value" id="bw-val">2px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>border-radius</code></label>
+              <div class="range-control">
+                <input type="range" min="0" max="60" value="8" oninput="setBorderRadius(this.value,this)">
+                <span class="range-value" id="br-val">8px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>border-color</code></label>
+              <div class="options-row">
+                <button class="opt-btn color-opt selected" onclick="setBorder('color','#468B8D',this)"><span class="color-swatch" style="background:#468B8D"></span>#468B8D</button>
+                <button class="opt-btn color-opt" onclick="setBorder('color','#EEEEEE',this)"><span class="color-swatch" style="background:#EEEEEE"></span>#EEEEEE</button>
+                <button class="opt-btn color-opt" onclick="setBorder('color','#253900',this)"><span class="color-swatch" style="background:#253900"></span>#253900</button>
+              </div>
+            </div>
+            <div class="css-output" id="border-output">border: 2px solid #468B8D;<br>border-radius: 8px;</div>
+          </div>
+          <div class="playground-preview">
+            <div class="preview-label">Preview</div>
+            <div id="border-preview" style="width:120px;height:80px;border:2px solid #468B8D;border-radius:8px;background:rgba(70,139,141,0.1);display:flex;align-items:center;justify-content:center;color:#333;font-family:Cairo;font-size:14px;transition:all 0.3s;">
+              إطار
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ BOX MODEL ═══ -->
+  <div id="boxmodel" class="content">
+    <div class="section-title">📦 Box Model</div>
+    <div class="section-subtitle">فهم Margin, Border, Padding, Content</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> مفهوم Box Model</h3>
+      <p>كل عنصر HTML هو "صندوق" بيتكون من 4 طبقات:</p>
+      <!-- Visual Box Model -->
+      <div style="margin:24px auto;max-width:420px;text-align:center;">
+        <div id="bm-box" style="background:rgba(213,225,239,0.15);border:2px dashed #D5E1EF;padding:24px;border-radius:8px;position:relative;transition:all 0.4s;">
+          <div style="position:absolute;top:4px;right:8px;font-size:11px;color:#D5E1EF;font-family:var(--mono);">margin</div>
+          <div style="background:rgba(70,139,141,0.15);border:2px solid #468B8D;padding:20px;border-radius:6px;position:relative;">
+            <div style="position:absolute;top:4px;right:8px;font-size:11px;color:#468B8D;font-family:var(--mono);">border</div>
+            <div style="background:rgba(37,57,0,0.4);border:2px dashed #253900;padding:20px;border-radius:4px;position:relative;">
+              <div style="position:absolute;top:4px;right:8px;font-size:11px;color:#a0b080;font-family:var(--mono);">padding</div>
+              <div style="background:rgba(70,139,141,0.3);padding:16px;border-radius:4px;color:var(--c1);font-weight:700;font-family:var(--mono);font-size:14px;">content</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ Box Model Playground</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>padding</code></label>
+              <div class="range-control">
+                <input type="range" min="0" max="40" value="16" oninput="setBoxModel('padding',this.value+'px',this)">
+                <span class="range-value" id="pad-val">16px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>margin</code></label>
+              <div class="range-control">
+                <input type="range" min="0" max="40" value="8" oninput="setBoxModel('margin',this.value+'px',this)">
+                <span class="range-value" id="mar-val">8px</span>
+              </div>
+            </div>
+            <div class="css-output" id="bm-output">padding: 16px;<br>margin: 8px;</div>
+          </div>
+          <div class="playground-preview" style="background:#f5f5f5;overflow:hidden;">
+            <div class="preview-label">Preview</div>
+            <div style="background:rgba(0,100,100,0.1);border:2px dashed #aaa;display:inline-block;">
+              <div id="bm-preview" style="padding:16px;margin:8px;background:#468B8D;color:#fff;font-family:Cairo;font-size:14px;font-weight:700;transition:all 0.3s;white-space:nowrap;">محتوى العنصر</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ POSITION ═══ -->
+  <div id="position" class="content">
+    <div class="section-title">📍 Position</div>
+    <div class="section-subtitle">تحكم في مكان العناصر في الصفحة</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> قيم الـ Position</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:10px;padding:16px;">
+          <div style="font-family:var(--mono);color:var(--accent2);font-size:14px;margin-bottom:6px;">static</div>
+          <div style="font-size:13px;color:var(--text-dim);">الافتراضي — مش بتقدر تتحكم في top/left</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:10px;padding:16px;">
+          <div style="font-family:var(--mono);color:var(--accent2);font-size:14px;margin-bottom:6px;">relative</div>
+          <div style="font-size:13px;color:var(--text-dim);">نسبي لموقعه الأصلي</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:10px;padding:16px;">
+          <div style="font-family:var(--mono);color:var(--accent2);font-size:14px;margin-bottom:6px;">absolute</div>
+          <div style="font-size:13px;color:var(--text-dim);">نسبي لأقرب أب عنده position</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:10px;padding:16px;">
+          <div style="font-family:var(--mono);color:var(--accent2);font-size:14px;margin-bottom:6px;">fixed</div>
+          <div style="font-size:13px;color:var(--text-dim);">ثابت في الشاشة — مش بيتحرك</div>
+        </div>
+        <div style="background:rgba(70,139,141,0.08);border:1px solid var(--card-border);border-radius:10px;padding:16px;">
+          <div style="font-family:var(--mono);color:var(--accent2);font-size:14px;margin-bottom:6px;">sticky</div>
+          <div style="font-size:13px;color:var(--text-dim);">بيتثبت لما توصله بالـ scroll</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="sel">.box</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="val">20px</span>;
+  <span class="prop">right</span>: <span class="val">0</span>;
+  <span class="prop">z-index</span>: <span class="val">10</span>;
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ FLEXBOX ═══ -->
+  <div id="flexbox" class="content">
+    <div class="section-title">↔️ Flexbox</div>
+    <div class="section-subtitle">أقوى نظام تخطيط في CSS — ضروري تتقنه</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Flexbox Playground</h3>
+      <p>Flexbox بتشتغل على مستويين: الـ <strong style="color:var(--accent2)">Container</strong> (الأب) والـ <strong style="color:var(--accent2)">Items</strong> (الأبناء).</p>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ Flexbox Live</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls" style="gap:14px;">
+            <div class="control-row">
+              <label><code>display: flex</code> — تفعيل Flexbox</label>
+            </div>
+            <div class="control-row">
+              <label><code>flex-direction</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFlex('flexDirection','row',this)">row</button>
+                <button class="opt-btn" onclick="setFlex('flexDirection','column',this)">column</button>
+                <button class="opt-btn" onclick="setFlex('flexDirection','row-reverse',this)">row-reverse</button>
+                <button class="opt-btn" onclick="setFlex('flexDirection','column-reverse',this)">column-reverse</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>justify-content</code> — المحور الرئيسي</label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFlex('justifyContent','flex-start',this)">flex-start</button>
+                <button class="opt-btn" onclick="setFlex('justifyContent','center',this)">center</button>
+                <button class="opt-btn" onclick="setFlex('justifyContent','flex-end',this)">flex-end</button>
+                <button class="opt-btn" onclick="setFlex('justifyContent','space-between',this)">space-between</button>
+                <button class="opt-btn" onclick="setFlex('justifyContent','space-around',this)">space-around</button>
+                <button class="opt-btn" onclick="setFlex('justifyContent','space-evenly',this)">space-evenly</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>align-items</code> — المحور العكسي</label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFlex('alignItems','stretch',this)">stretch</button>
+                <button class="opt-btn" onclick="setFlex('alignItems','flex-start',this)">flex-start</button>
+                <button class="opt-btn" onclick="setFlex('alignItems','center',this)">center</button>
+                <button class="opt-btn" onclick="setFlex('alignItems','flex-end',this)">flex-end</button>
+                <button class="opt-btn" onclick="setFlex('alignItems','baseline',this)">baseline</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>flex-wrap</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setFlex('flexWrap','nowrap',this)">nowrap</button>
+                <button class="opt-btn" onclick="setFlex('flexWrap','wrap',this)">wrap</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>gap</code></label>
+              <div class="range-control">
+                <input type="range" min="0" max="20" value="8" oninput="setFlexGap(this.value)">
+                <span class="range-value" id="fg-val">8px</span>
+              </div>
+            </div>
+            <div class="css-output" id="flex-output">display: flex;<br>flex-direction: row;<br>justify-content: flex-start;<br>align-items: stretch;</div>
+          </div>
+          <div class="playground-preview" style="padding:16px;align-items:stretch;background:#f5f5f5;">
+            <div class="preview-label">Preview</div>
+            <div class="flex-demo-container" id="flex-container" style="display:flex;flex-direction:row;justify-content:flex-start;align-items:stretch;gap:8px;width:100%;">
+              <div class="flex-demo-item">1</div>
+              <div class="flex-demo-item">2</div>
+              <div class="flex-demo-item">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> خصائص الـ Items</h3>
+      <table class="prop-table">
+        <tr><th>الخاصية</th><th>الوظيفة</th></tr>
+        <tr><td>flex-grow</td><td>نسبة التمدد — 1 يعني خد المساحة الزيادة</td></tr>
+        <tr><td>flex-shrink</td><td>نسبة التقلص — 0 يعني اتمنعه من التقلص</td></tr>
+        <tr><td>flex-basis</td><td>الحجم الأساسي قبل التمدد</td></tr>
+        <tr><td>flex</td><td>اختصار: flex-grow flex-shrink flex-basis</td></tr>
+        <tr><td>align-self</td><td>محاذاة عنصر واحد بشكل منفرد</td></tr>
+        <tr><td>order</td><td>ترتيب العنصر بدون تغيير الـ HTML</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ GRID ═══ -->
+  <div id="grid" class="content">
+    <div class="section-title">🔲 CSS Grid</div>
+    <div class="section-subtitle">نظام تخطيط ثنائي الأبعاد — أقوى من Flexbox للتخطيط الكامل</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Grid Playground</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ Grid Live</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls" style="gap:14px;">
+            <div class="control-row">
+              <label><code>grid-template-columns</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setGrid('cols','1fr 1fr',this)">2 cols</button>
+                <button class="opt-btn" onclick="setGrid('cols','1fr 1fr 1fr',this)">3 cols</button>
+                <button class="opt-btn" onclick="setGrid('cols','repeat(4,1fr)',this)">4 cols</button>
+                <button class="opt-btn" onclick="setGrid('cols','1fr 2fr',this)">1fr 2fr</button>
+                <button class="opt-btn" onclick="setGrid('cols','200px 1fr',this)">200px 1fr</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>gap</code></label>
+              <div class="range-control">
+                <input type="range" min="0" max="24" value="8" oninput="setGridGap(this.value)">
+                <span class="range-value" id="gg-val">8px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>justify-items</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setGrid('justifyItems','stretch',this)">stretch</button>
+                <button class="opt-btn" onclick="setGrid('justifyItems','start',this)">start</button>
+                <button class="opt-btn" onclick="setGrid('justifyItems','center',this)">center</button>
+                <button class="opt-btn" onclick="setGrid('justifyItems','end',this)">end</button>
+              </div>
+            </div>
+            <div class="css-output" id="grid-output">display: grid;<br>grid-template-columns: 1fr 1fr;<br>gap: 8px;</div>
+          </div>
+          <div class="playground-preview" style="padding:16px;align-items:flex-start;background:#f5f5f5;">
+            <div class="preview-label">Preview</div>
+            <div class="grid-demo-container" id="grid-container" style="grid-template-columns:1fr 1fr;gap:8px;width:100%;">
+              <div class="grid-demo-item">1</div>
+              <div class="grid-demo-item">2</div>
+              <div class="grid-demo-item">3</div>
+              <div class="grid-demo-item">4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Grid Areas</h3>
+      <p>قدرة مميزة في Grid — تقدر تسمي المناطق وترتبها بسهولة:</p>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-areas</span>:
+    <span class="val">"header header"</span>
+    <span class="val">"sidebar main"</span>
+    <span class="val">"footer footer"</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">200px 1fr</span>;
+}
+
+<span class="sel">header</span> { <span class="prop">grid-area</span>: <span class="val">header</span>; }
+<span class="sel">.sidebar</span> { <span class="prop">grid-area</span>: <span class="val">sidebar</span>; }
+<span class="sel">main</span> { <span class="prop">grid-area</span>: <span class="val">main</span>; }
+<span class="sel">footer</span> { <span class="prop">grid-area</span>: <span class="val">footer</span>; }</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ RESPONSIVE ═══ -->
+  <div id="responsive" class="content">
+    <div class="section-title">📱 Responsive Design</div>
+    <div class="section-subtitle">اخلي موقعك يشتغل على كل الأجهزة</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Media Queries</h3>
+      <p>Media Queries بتخليك تطبق CSS معين لما الشاشة بتكون بحجم محدد:</p>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="comment">/* Mobile First — الأفضل */</span>
+<span class="comment">/* الكود الافتراضي للموبايل */</span>
+<span class="sel">.container</span> { <span class="prop">padding</span>: <span class="val">16px</span>; }
+
+<span class="comment">/* Tablet 768px+ */</span>
+@media (min-width: <span class="val">768px</span>) {
+  <span class="sel">.container</span> { <span class="prop">padding</span>: <span class="val">32px</span>; }
+}
+
+<span class="comment">/* Desktop 1024px+ */</span>
+@media (min-width: <span class="val">1024px</span>) {
+  <span class="sel">.container</span> { <span class="prop">max-width</span>: <span class="val">1200px</span>; <span class="prop">margin</span>: <span class="val">0 auto</span>; }
+}</div>
+      </div>
+      <div class="tip"><strong>Breakpoints شائعة:</strong> 480px (موبايل صغير) / 768px (تابلت) / 1024px (لاب توب) / 1280px (ديسكتوب)</div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> وحدات Responsive</h3>
+      <table class="prop-table">
+        <tr><th>الوحدة</th><th>المعنى</th><th>استخدام</th></tr>
+        <tr><td>%</td><td>نسبة من الأب</td><td>width: 50%</td></tr>
+        <tr><td>vw</td><td>نسبة من عرض الشاشة</td><td>font-size: 5vw</td></tr>
+        <tr><td>vh</td><td>نسبة من ارتفاع الشاشة</td><td>height: 100vh</td></tr>
+        <tr><td>rem</td><td>نسبة من root font-size</td><td>padding: 1.5rem</td></tr>
+        <tr><td>em</td><td>نسبة من font-size الأب</td><td>margin: 2em</td></tr>
+        <tr><td>clamp()</td><td>بين min وmax</td><td>font-size: clamp(16px, 4vw, 32px)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TRANSFORMS ═══ -->
+  <div id="transforms" class="content">
+    <div class="section-title">🔄 Transforms</div>
+    <div class="section-subtitle">تحريك وتدوير وتكبير العناصر</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Transform Playground</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ جرّب Transforms</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls" style="gap:14px;">
+            <div class="control-row">
+              <label><code>rotate</code></label>
+              <div class="range-control">
+                <input type="range" min="-180" max="180" value="0" oninput="setTransform('rotate',this.value+'deg',this)">
+                <span class="range-value" id="rot-val">0deg</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>scale</code></label>
+              <div class="range-control">
+                <input type="range" min="0.1" max="2" step="0.1" value="1" oninput="setTransform('scale',this.value,this)">
+                <span class="range-value" id="sc-val">1</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>translateX</code></label>
+              <div class="range-control">
+                <input type="range" min="-60" max="60" value="0" oninput="setTransform('translateX',this.value+'px',this)">
+                <span class="range-value" id="tx-val">0px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>translateY</code></label>
+              <div class="range-control">
+                <input type="range" min="-60" max="60" value="0" oninput="setTransform('translateY',this.value+'px',this)">
+                <span class="range-value" id="ty-val">0px</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>skewX</code></label>
+              <div class="range-control">
+                <input type="range" min="-45" max="45" value="0" oninput="setTransform('skewX',this.value+'deg',this)">
+                <span class="range-value" id="skx-val">0deg</span>
+              </div>
+            </div>
+            <div class="css-output" id="transform-output">transform: none;</div>
+          </div>
+          <div class="playground-preview">
+            <div class="preview-label">Preview</div>
+            <div class="transform-box" id="transform-preview">🔲</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ ANIMATIONS ═══ -->
+  <div id="animations" class="content">
+    <div class="section-title">✨ Animations</div>
+    <div class="section-subtitle">CSS Animations و Transitions — بدون JavaScript</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Transitions</h3>
+      <p>Transition = تغيير سلس عند الـ hover أو تغيير الـ class:</p>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="sel">.btn</span> {
+  <span class="prop">background</span>: <span class="val">#468B8D</span>;
+  <span class="prop">transition</span>: all <span class="val">0.3s ease</span>;
+  <span class="comment">/* property duration timing-function delay */</span>
+}
+
+<span class="sel">.btn:hover</span> {
+  <span class="prop">background</span>: <span class="val">#253900</span>;
+  <span class="prop">transform</span>: <span class="val">translateY(-3px)</span>;
+}</div>
+      </div>
+      <div style="margin-top:16px;text-align:center;">
+        <button id="hover-btn" style="background:#468B8D;color:#fff;border:none;padding:14px 32px;border-radius:10px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s ease;" onmouseover="this.style.background='#253900';this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.3)'" onmouseout="this.style.background='#468B8D';this.style.transform='none';this.style.boxShadow='none'">Hover عليّ 👆</button>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Keyframe Animations</h3>
+      <div class="playground">
+        <div class="playground-header"><h4>⚡ Animation Playground</h4></div>
+        <div class="playground-body">
+          <div class="playground-controls">
+            <div class="control-row">
+              <label><code>animation-name</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setAnim('none',this)">none</button>
+                <button class="opt-btn" onclick="setAnim('spin',this)">spin</button>
+                <button class="opt-btn" onclick="setAnim('bounce',this)">bounce</button>
+                <button class="opt-btn" onclick="setAnim('pulse',this)">pulse</button>
+                <button class="opt-btn" onclick="setAnim('shake',this)">shake</button>
+                <button class="opt-btn" onclick="setAnim('fadeInOut',this)">fadeInOut</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>animation-duration</code></label>
+              <div class="range-control">
+                <input type="range" min="0.2" max="3" step="0.1" value="1" oninput="setAnimDuration(this.value)">
+                <span class="range-value" id="ad-val">1s</span>
+              </div>
+            </div>
+            <div class="control-row">
+              <label><code>animation-timing-function</code></label>
+              <div class="options-row">
+                <button class="opt-btn selected" onclick="setAnimEasing('ease',this)">ease</button>
+                <button class="opt-btn" onclick="setAnimEasing('linear',this)">linear</button>
+                <button class="opt-btn" onclick="setAnimEasing('ease-in',this)">ease-in</button>
+                <button class="opt-btn" onclick="setAnimEasing('ease-out',this)">ease-out</button>
+              </div>
+            </div>
+            <div class="css-output" id="anim-output">animation: none;</div>
+          </div>
+          <div class="playground-preview">
+            <div class="preview-label">Preview</div>
+            <div class="anim-box" id="anim-preview">✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ CSS VARIABLES ═══ -->
+  <div id="variables" class="content">
+    <div class="section-title">💾 CSS Variables</div>
+    <div class="section-subtitle">متغيرات CSS — قوة التخصيص والـ Theming</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> كيفية الاستخدام</h3>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="comment">/* تعريف المتغيرات في :root */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--primary-color</span>: <span class="val">#468B8D</span>;
+  <span class="prop">--bg-color</span>: <span class="val">#253900</span>;
+  <span class="prop">--font-size-base</span>: <span class="val">16px</span>;
+  <span class="prop">--radius</span>: <span class="val">12px</span>;
+}
+
+<span class="comment">/* استخدامها */</span>
+<span class="sel">.btn</span> {
+  <span class="prop">background</span>: <span class="val">var(--primary-color)</span>;
+  <span class="prop">font-size</span>: <span class="val">var(--font-size-base)</span>;
+  <span class="prop">border-radius</span>: <span class="val">var(--radius)</span>;
+}
+
+<span class="comment">/* Dark Mode بسهولة */</span>
+@media (prefers-color-scheme: dark) {
+  <span class="sel">:root</span> {
+    <span class="prop">--bg-color</span>: <span class="val">#0a0a0a</span>;
+  }
+}</div>
+      </div>
+      <div class="tip"><strong>فايدة ضخمة:</strong> تغير المتغير في مكان واحد فبيتغير في كل المشروع. ده الأساس في أي Design System.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ PSEUDO ═══ -->
+  <div id="pseudo" class="content">
+    <div class="section-title">🎭 Pseudo-classes & Pseudo-elements</div>
+    <div class="section-subtitle">أدوات قوية بدون إضافة HTML</div>
+
+    <div class="lesson-card">
+      <h3><span class="num">1</span> Pseudo-classes الأكثر استخداماً</h3>
+      <table class="prop-table">
+        <tr><th>الـ Pseudo-class</th><th>الاستخدام</th></tr>
+        <tr><td>:hover</td><td>لما المستخدم يحوم فوق العنصر</td></tr>
+        <tr><td>:focus</td><td>لما العنصر يكون مختاراً (مثل input)</td></tr>
+        <tr><td>:active</td><td>لحظة الضغط</td></tr>
+        <tr><td>:visited</td><td>لينك اتزار قبل كده</td></tr>
+        <tr><td>:nth-child(n)</td><td>العنصر الـ n في الأبناء</td></tr>
+        <tr><td>:first-child</td><td>الابن الأول</td></tr>
+        <tr><td>:last-child</td><td>الابن الأخير</td></tr>
+        <tr><td>:not(selector)</td><td>كل العناصر غير المحدد</td></tr>
+        <tr><td>:checked</td><td>checkbox أو radio اتعمل عليه check</td></tr>
+        <tr><td>:disabled</td><td>عنصر form معطل</td></tr>
+      </table>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">2</span> Pseudo-elements</h3>
+      <table class="prop-table">
+        <tr><th>الـ Pseudo-element</th><th>الاستخدام</th></tr>
+        <tr><td>::before</td><td>يضيف محتوى قبل العنصر</td></tr>
+        <tr><td>::after</td><td>يضيف محتوى بعد العنصر</td></tr>
+        <tr><td>::first-line</td><td>يستهدف السطر الأول</td></tr>
+        <tr><td>::first-letter</td><td>يستهدف أول حرف</td></tr>
+        <tr><td>::selection</td><td>النص المحدد بالماوس</td></tr>
+        <tr><td>::placeholder</td><td>نص الـ placeholder في input</td></tr>
+        <tr><td>::marker</td><td>نقطة الـ list item</td></tr>
+      </table>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="sel">.card::before</span> {
+  <span class="prop">content</span>: <span class="val">""</span>;
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="val">0</span>;
+  <span class="prop">left</span>: <span class="val">0</span>;
+  <span class="prop">width</span>: <span class="val">100%</span>;
+  <span class="prop">height</span>: <span class="val">3px</span>;
+  <span class="prop">background</span>: <span class="val">linear-gradient(90deg, #468B8D, #253900)</span>;
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ ADVANCED ═══ -->
+  <div id="advanced" class="content">
+    <div class="section-title">⚡ خصائص متقدمة</div>
+    <div class="section-subtitle">الأدوات اللي بتفرق بين المبتدئ والمحترف</div>
+
+    <div class="lessons-grid">
+      <div class="mini-card">
+        <div class="icon">🌫️</div>
+        <h4>backdrop-filter</h4>
+        <p>ضبابية الخلفية — أساس Glassmorphism</p>
+        <div class="code-block" style="margin-top:12px;font-size:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">backdrop-filter: blur(10px);</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">✂️</div>
+        <h4>clip-path</h4>
+        <p>قص العناصر بأشكال مخصصة</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🎭</div>
+        <h4>mix-blend-mode</h4>
+        <p>طريقة دمج العنصر مع اللي تحته</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">mix-blend-mode: multiply;</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🖌️</div>
+        <h4>filter</h4>
+        <p>فلاتر على العناصر والصور</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">filter: blur(4px) brightness(0.8);</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">📐</div>
+        <h4>aspect-ratio</h4>
+        <p>نسبة العرض للارتفاع ثابتة</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">aspect-ratio: 16 / 9;</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">⚙️</div>
+        <h4>CSS Functions</h4>
+        <p>clamp(), min(), max(), calc()</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">font-size: clamp(14px, 4vw, 24px);</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🏗️</div>
+        <h4>container-queries</h4>
+        <p>Responsive حسب حجم الـ Container مش الشاشة</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">@container (min-width: 400px) { ... }</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🔤</div>
+        <h4>@font-face</h4>
+        <p>تحميل خطوط مخصصة</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">@font-face { font-family: 'MyFont'; src: url('font.woff2'); }</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🌊</div>
+        <h4>scroll-behavior</h4>
+        <p>تمرير سلس بين الـ sections</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">html { scroll-behavior: smooth; }</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🎯</div>
+        <h4>pointer-events</h4>
+        <p>تحكم في تفاعل الماوس</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">pointer-events: none; /* تجاهل الكليكات */</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">💎</div>
+        <h4>outline vs border</h4>
+        <p>outline مش بتأثر على الـ layout</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">outline: 2px solid #468B8D; outline-offset: 4px;</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="icon">⚡</div>
+        <h4>will-change</h4>
+        <p>تحسين أداء الأنيميشن</p>
+        <div class="code-block" style="margin-top:12px;">
+          <div class="code-content" style="padding:12px;font-size:12px;">will-change: transform, opacity;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3><span class="num">+</span> Box-shadow المتقدمة</h3>
+      <p>box-shadow بتاخد: x y blur spread color (inset اختياري):</p>
+      <div class="code-block">
+        <div class="code-header"><span>CSS</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <div class="code-content"><span class="comment">/* Shadow بسيطة */</span>
+<span class="prop">box-shadow</span>: <span class="val">0 4px 12px rgba(0,0,0,0.15)</span>;
+
+<span class="comment">/* Multi-shadow */</span>
+<span class="prop">box-shadow</span>:
+  <span class="val">0 1px 2px rgba(0,0,0,0.1)</span>,
+  <span class="val">0 8px 24px rgba(0,0,0,0.15)</span>;
+
+<span class="comment">/* Inset = داخل العنصر */</span>
+<span class="prop">box-shadow</span>: <span class="val">inset 0 2px 8px rgba(0,0,0,0.2)</span>;
+
+<span class="comment">/* Glow Effect */</span>
+<span class="prop">box-shadow</span>: <span class="val">0 0 20px rgba(70,139,141,0.5)</span>;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ QUIZ ═══ -->
+  <div id="quiz" class="content">
+    <div class="section-title">🧠 اختبر نفسك</div>
+    <div class="section-subtitle">10 أسئلة — قياس مستواك الحقيقي</div>
+
+    <div class="lesson-card" id="quiz-container">
+      <div id="quiz-body"></div>
+    </div>
+  </div>
+
+</main>
+
+<style>
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes pulse { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(0.85); opacity:0.6; } }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+@keyframes fadeInOut { 0%,100%{opacity:0} 50%{opacity:1} }
+</style>
+
+<script>
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(`'${id}'`)) n.classList.add('active');
+  });
+  if (window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+  if (id === 'quiz') initQuiz();
+}
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ── COPY CODE ──
+function copyCode(btn) {
+  const code = btn.closest('.code-block').querySelector('.code-content').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'تم ✓';
+    setTimeout(() => btn.textContent = 'نسخ', 2000);
+  });
+}
+
+// ── COLOR PLAYGROUND ──
+const colorState = { textColor: '#EEEEEE', bgColor: '#253900' };
+function setColorProp(prop, val, btn) {
+  colorState[prop] = val;
+  const siblings = btn.parentElement.querySelectorAll('.opt-btn');
+  siblings.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('color-preview').style.background = colorState.bgColor;
+  document.getElementById('color-text').style.color = colorState.textColor;
+  document.getElementById('color-output').innerHTML = `color: ${colorState.textColor};<br>background-color: ${colorState.bgColor};`;
+}
+
+// ── BACKGROUND PLAYGROUND ──
+const bgMap = {
+  solid: { css: 'background: #253900;', bg: '#253900' },
+  linear: { css: 'background: linear-gradient(135deg, #468B8D, #253900);', bg: 'linear-gradient(135deg, #468B8D, #253900)' },
+  radial: { css: 'background: radial-gradient(circle, #468B8D, #253900);', bg: 'radial-gradient(circle, #468B8D, #253900)' },
+  pattern: { css: "background-color: #253900;\nbackground-image: repeating-linear-gradient(45deg, rgba(70,139,141,0.15) 0px, rgba(70,139,141,0.15) 1px, transparent 1px, transparent 12px);", bg: "repeating-linear-gradient(45deg, rgba(70,139,141,0.15) 0px, rgba(70,139,141,0.15) 1px, transparent 1px, transparent 12px)" }
+};
+let currentBg = 'solid', currentBgSize = 'auto';
+function setBg(type, btn) {
+  currentBg = type;
+  highlightBtn(btn);
+  applyBg();
+}
+function setBgSize(size, btn) {
+  currentBgSize = size;
+  highlightBtn(btn);
+  applyBg();
+}
+function applyBg() {
+  const prev = document.getElementById('bg-preview');
+  if (currentBg === 'pattern') {
+    prev.style.background = '#253900';
+    prev.style.backgroundImage = "repeating-linear-gradient(45deg, rgba(70,139,141,0.15) 0px, rgba(70,139,141,0.15) 1px, transparent 1px, transparent 12px)";
+  } else {
+    prev.style.background = bgMap[currentBg].bg;
+    prev.style.backgroundImage = '';
+  }
+  prev.style.backgroundSize = currentBgSize;
+  document.getElementById('bg-output').textContent = bgMap[currentBg].css + '\nbackground-size: ' + currentBgSize + ';';
+}
+
+// ── TEXT PLAYGROUND ──
+const textState = {};
+function setTextProp(prop, val, btn) {
+  textState[prop] = val;
+  highlightBtn(btn);
+  const prev = document.getElementById('text-preview');
+  prev.style[prop.replace(/-([a-z])/g, (m,c) => c.toUpperCase())] = val;
+  updateTextOutput();
+}
+function setTextRange(prop, val, input) {
+  const camel = prop.replace(/-([a-z])/g, (m,c) => c.toUpperCase());
+  document.getElementById('text-preview').style[camel] = val;
+  const idMap = {'letter-spacing':'ls-val','line-height':'lh-val'};
+  if (idMap[prop]) document.getElementById(idMap[prop]).textContent = val;
+  updateTextOutput();
+}
+function updateTextOutput() {
+  const props = Object.entries(textState).map(([k,v]) => `${k}: ${v};`).join('<br>');
+  document.getElementById('text-output').innerHTML = props || 'text-align: right;';
+}
+
+// ── FONT PLAYGROUND ──
+const fontState = { family:'Cairo, sans-serif', size:'20px', weight:'400', style:'normal' };
+function setFont(val, btn) { fontState.family = val; highlightBtn(btn); applyFont(); }
+function setFontSize(val, input) { fontState.size = val+'px'; document.getElementById('fs-val').textContent = val+'px'; applyFont(); }
+function setFontWeight(val, btn) { fontState.weight = val; highlightBtn(btn); applyFont(); }
+function setFontStyle(val, btn) { fontState.style = val; highlightBtn(btn); applyFont(); }
+function applyFont() {
+  const p = document.getElementById('font-preview');
+  p.style.fontFamily = fontState.family;
+  p.style.fontSize = fontState.size;
+  p.style.fontWeight = fontState.weight;
+  p.style.fontStyle = fontState.style;
+  document.getElementById('font-output').innerHTML = `font-family: ${fontState.family};<br>font-size: ${fontState.size};<br>font-weight: ${fontState.weight};<br>font-style: ${fontState.style};`;
+}
+
+// ── BORDER PLAYGROUND ──
+const borderState = { style:'solid', width:'2px', radius:'8px', color:'#468B8D' };
+function setBorder(prop, val, btn) {
+  borderState[prop] = val;
+  highlightBtn(btn);
+  applyBorder();
+}
+function setBorderWidth(val, input) {
+  borderState.width = val+'px';
+  document.getElementById('bw-val').textContent = val+'px';
+  applyBorder();
+}
+function setBorderRadius(val, input) {
+  borderState.radius = val+'px';
+  document.getElementById('br-val').textContent = val+'px';
+  applyBorder();
+}
+function applyBorder() {
+  const p = document.getElementById('border-preview');
+  p.style.border = `${borderState.width} ${borderState.style} ${borderState.color}`;
+  p.style.borderRadius = borderState.radius;
+  document.getElementById('border-output').innerHTML = `border: ${borderState.width} ${borderState.style} ${borderState.color};<br>border-radius: ${borderState.radius};`;
+}
+
+// ── BOX MODEL ──
+function setBoxModel(prop, val, input) {
+  document.getElementById('bm-preview').style[prop] = val;
+  const idMap = {padding:'pad-val',margin:'mar-val'};
+  if (idMap[prop]) document.getElementById(idMap[prop]).textContent = val;
+  document.getElementById('bm-output').innerHTML = `padding: ${document.getElementById('bm-preview').style.padding};<br>margin: ${document.getElementById('bm-preview').style.margin};`;
+}
+
+// ── FLEXBOX PLAYGROUND ──
+const flexState = { flexDirection:'row', justifyContent:'flex-start', alignItems:'stretch', flexWrap:'nowrap', gap:'8px' };
+function setFlex(prop, val, btn) {
+  flexState[prop] = val;
+  highlightBtn(btn);
+  applyFlex();
+}
+function setFlexGap(val) {
+  flexState.gap = val+'px';
+  document.getElementById('fg-val').textContent = val+'px';
+  applyFlex();
+}
+function applyFlex() {
+  const c = document.getElementById('flex-container');
+  c.style.flexDirection = flexState.flexDirection;
+  c.style.justifyContent = flexState.justifyContent;
+  c.style.alignItems = flexState.alignItems;
+  c.style.flexWrap = flexState.flexWrap;
+  c.style.gap = flexState.gap;
+  document.getElementById('flex-output').innerHTML = `display: flex;<br>flex-direction: ${flexState.flexDirection};<br>justify-content: ${flexState.justifyContent};<br>align-items: ${flexState.alignItems};<br>flex-wrap: ${flexState.flexWrap};<br>gap: ${flexState.gap};`;
+}
+
+// ── GRID PLAYGROUND ──
+const gridState = { cols:'1fr 1fr', gap:'8px', justifyItems:'stretch' };
+function setGrid(prop, val, btn) {
+  gridState[prop] = val;
+  highlightBtn(btn);
+  applyGrid();
+}
+function setGridGap(val) {
+  gridState.gap = val+'px';
+  document.getElementById('gg-val').textContent = val+'px';
+  applyGrid();
+}
+function applyGrid() {
+  const c = document.getElementById('grid-container');
+  c.style.gridTemplateColumns = gridState.cols;
+  c.style.gap = gridState.gap;
+  c.style.justifyItems = gridState.justifyItems;
+  document.getElementById('grid-output').innerHTML = `display: grid;<br>grid-template-columns: ${gridState.cols};<br>gap: ${gridState.gap};<br>justify-items: ${gridState.justifyItems};`;
+}
+
+// ── TRANSFORM PLAYGROUND ──
+const tfState = { rotate:'0deg', scale:'1', translateX:'0px', translateY:'0px', skewX:'0deg' };
+function setTransform(prop, val, input) {
+  tfState[prop] = val;
+  const idMap = { rotate:'rot-val', scale:'sc-val', translateX:'tx-val', translateY:'ty-val', skewX:'skx-val' };
+  document.getElementById(idMap[prop]).textContent = val;
+  const tf = `rotate(${tfState.rotate}) scale(${tfState.scale}) translateX(${tfState.translateX}) translateY(${tfState.translateY}) skewX(${tfState.skewX})`;
+  document.getElementById('transform-preview').style.transform = tf;
+  document.getElementById('transform-output').textContent = 'transform: ' + tf + ';';
+}
+
+// ── ANIMATION PLAYGROUND ──
+const animState = { name:'none', duration:'1s', easing:'ease' };
+function setAnim(name, btn) {
+  animState.name = name;
+  highlightBtn(btn);
+  applyAnim();
+}
+function setAnimDuration(val) {
+  animState.duration = val+'s';
+  document.getElementById('ad-val').textContent = val+'s';
+  applyAnim();
+}
+function setAnimEasing(val, btn) {
+  animState.easing = val;
+  highlightBtn(btn);
+  applyAnim();
+}
+function applyAnim() {
+  const box = document.getElementById('anim-preview');
+  if (animState.name === 'none') {
+    box.style.animation = 'none';
+    document.getElementById('anim-output').textContent = 'animation: none;';
+  } else {
+    box.style.animation = `${animState.name} ${animState.duration} ${animState.easing} infinite`;
+    document.getElementById('anim-output').textContent = `animation: ${animState.name} ${animState.duration} ${animState.easing} infinite;`;
+  }
+}
+
+// ── HELPER ──
+function highlightBtn(btn) {
+  const siblings = btn.parentElement.querySelectorAll('.opt-btn');
+  siblings.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ── QUIZ ──
+const questions = [
+  { q:'إيه اختصار CSS؟', opts:['Cascading Style Sheets','Computer Style Syntax','Cascading Sheet Styles','Creative Style Sheets'], a:0 },
+  { q:'أنهي selector بيختار كل العناصر؟', opts:['#all','.all','*','&'], a:2 },
+  { q:'إزاي تخلي div ابنه يتوسط بـ Flexbox؟', opts:['text-align: center','justify-content: center + align-items: center','margin: auto','position: center'], a:1 },
+  { q:'إيه الفرق بين margin و padding؟', opts:['مفيش فرق','margin داخل البوردر، padding بره','padding داخل البوردر، margin بره','margin للعرض، padding للارتفاع'], a:2 },
+  { q:'إيه قيمة display: flex بتحتاجها في الأب؟', opts:['flex-items: true','display: flex في الأبناء','display: flex في الأب بس','flex: 1 في الأبناء'], a:2 },
+  { q:'إزاي تعرّف CSS Variable؟', opts:['$primary: #red','var-primary: #red','--primary-color: #red',':variable { primary: red }'], a:2 },
+  { q:'إيه اللي بيخلي عنصر يفضل ثابت في نفس المكان في الشاشة وانت بتسكرول؟', opts:['position: absolute','position: sticky','position: fixed','position: static'], a:2 },
+  { q:'إيه الفرق بين grid-template-columns: 1fr 1fr و repeat(2, 1fr)؟', opts:['مفيش فرق — نفس النتيجة','1fr 1fr أسرع','repeat أكتر دقة','1fr 1fr بتحتاج display: grid'], a:0 },
+  { q:'إيه الـ pseudo-element اللي بيضيف محتوى قبل العنصر؟', opts:['::first','::before','::pre',':before-element'], a:1 },
+  { q:'إيه أفضل approach في الـ Responsive Design؟', opts:['Desktop First','Mobile First','Tablet First','مفيش أفضل'], a:1 },
+];
+
+let currentQ = 0, score = 0, answered = false;
+
+function initQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= questions.length) {
+    document.getElementById('quiz-body').innerHTML = `
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-size:80px;margin-bottom:16px;">${score >= 8 ? '🏆' : score >= 5 ? '💪' : '📚'}</div>
+        <div style="font-size:36px;font-weight:900;color:var(--c1);margin-bottom:8px;">${score} / ${questions.length}</div>
+        <div style="font-size:18px;color:var(--text-dim);margin-bottom:32px;">${score >= 8 ? 'ممتاز! أنت محترف CSS' : score >= 5 ? 'كويس! كمل المذاكرة' : 'مذاكر أكتر — راجع الدروس'}</div>
+        <button onclick="initQuiz()" style="background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:10px;font-family:var(--font);font-size:16px;font-weight:700;cursor:pointer;">تاني ←</button>
+      </div>`;
+    return;
+  }
+  const q = questions[currentQ];
+  answered = false;
+  document.getElementById('quiz-body').innerHTML = `
+    <div style="margin-bottom:12px;">
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px;font-family:var(--mono);">سؤال ${currentQ+1} من ${questions.length} — ${score} نقطة</div>
+      <div class="progress-bar-outer"><div class="progress-bar-inner" style="width:${(currentQ/questions.length)*100}%"></div></div>
+    </div>
+    <div style="font-size:20px;font-weight:700;color:var(--c1);margin-bottom:24px;">${q.q}</div>
+    <div id="quiz-opts">${q.opts.map((o,i) => `<div class="quiz-option" onclick="answerQuiz(${i})" style="direction:ltr;">${o}</div>`).join('')}</div>`;
+}
+
+function answerQuiz(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[idx].classList.add(idx === q.a ? 'correct' : 'wrong');
+  if (idx === q.a) { score++; } else { opts[q.a].classList.add('correct'); }
+  setTimeout(() => { currentQ++; renderQuestion(); }, 1200);
+}
+
+// Init
+showSection('intro');
+</script>
+</body>
+</html>
